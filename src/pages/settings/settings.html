@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title center>
+      Innstillinger
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Vis antall</ion-label>
+      <ion-toggle [(ngModel)]="showCount" (ionChange)="toggleShowCount()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

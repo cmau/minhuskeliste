@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar #mycontent>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title center>Min Huskeliste</ion-title>
+
+    <ion-buttons end>
+      <button (click)="add()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <!-- Tasks list -->
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)" class="small-margin-bottom">
+    <item-task class="item no-padding"
+               *ngFor="let task of tasks; let i = index"
+               [task]="task"
+               (itemRemove)="delete($event)"
+               (itemDetails)="details($event)"
+               (itemCheck)="check($event)">
+    </item-task>
+  </ion-list>
+
+  <ion-item *ngIf="!tasks || tasks.length === 0">
+    <p (click)="add()"><i>Listen er tom</i></p>
+  </ion-item>
+
+  <ion-item>
+    <ion-buttons>
+      <button (click)="add()" full>
+        <ion-icon name="add-circle"></ion-icon>
+        Legg til
+      </button>
+    </ion-buttons>
+  </ion-item>
+</ion-content>

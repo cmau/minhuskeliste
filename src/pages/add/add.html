@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button (click)="dismiss()">
+        <span primary>Tilbake</span>
+      </button>
+    </ion-buttons>
+
+    <ion-title center>
+      Legg til
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Splitt på komma</ion-label>
+    <ion-checkbox [(ngModel)]="autosplit"></ion-checkbox>
+  </ion-item>
+  <br>
+  <ion-item>
+    <ion-textarea [(ngModel)]="newTasks" placeholder="Skriv eller lim inn" rows="6"></ion-textarea>
+  </ion-item>
+  <br>
+  <ion-buttons start>
+    <button (click)="save()" full>Legg til</button>
+  </ion-buttons>
+</ion-content>

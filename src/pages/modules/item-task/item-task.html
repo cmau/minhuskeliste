@@ -1,0 +1,20 @@
+<ion-item-sliding class="item-remove-animate">
+  <ion-item>
+    <div (click)="checkTask()">
+      <h2 [ngClass]="{strikethrough: (task.completed === 1), textbold: (task.header === 1)}">{{task.name}}</h2>
+      <p *ngIf="(task.showCount===1) && (task.header === 0)">Antall: {{task.count}}</p>
+    </div>
+  </ion-item>
+
+  <ion-item-options side="left">
+    <button danger (click)="remove()">
+      <ion-icon name="trash"></ion-icon>
+    </button>
+  </ion-item-options>
+
+  <ion-item-options side="right">
+    <button (click)="details()">
+      <ion-icon name="information-circle"></ion-icon>
+    </button>
+  </ion-item-options>
+</ion-item-sliding>
