@@ -19,19 +19,26 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
-      let db = new SQLite();
-      db.openDatabase({
-        name: "data.db",
-        location: "default"
-      }).then(() => {
-        db.executeSql(this.sqlCreateTableTask, {}).then((data) => {
-          console.log("TABLE CREATED: ", data);
+      if (platform.is('cordova')) {
+        console.log("You're running on a device with Cordova!");
+
+        let db = new SQLite();
+        db.openDatabase({
+          name: "data.db",
+          location: "default"
+        }).then(() => {
+          db.executeSql(this.sqlCreateTableTask, {}).then((data) => {
+            console.log("TABLE CREATED: ", data);
+          }, (error) => {
+            console.error("Unable to execute sql", error);
+          })
         }, (error) => {
-          console.error("Unable to execute sql", error);
-        })
-      }, (error) => {
-        console.error("Unable to open database", error);
-      });
+          console.error("Unable to open database", error);
+        });
+
+      }else{
+        console.log("You're running from a browser");
+      }
     });
   }
 }

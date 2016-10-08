@@ -1,16 +1,16 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ModalController,
   AlertController,
   reorderArray,
   Platform,
   Events} from 'ionic-angular';
-import {Task} from '../../models/Task';
-import {AddPage} from '../add/add';
-import {DetailsPage} from '../details/details';
-import {ToastService} from '../../providers/toast-service/toast-service';
-import {TaskService} from '../../providers/task-service/task-service';
-import {SettingsService} from '../../providers/settings-service/settings-service';
+import { Task } from '../../models/Task';
+import { AddPage } from '../add/add';
+import { DetailsPage } from '../details/details';
+import { ToastService } from '../../providers/toast-service/toast-service';
+import { TaskService } from '../../providers/task-service/task-service';
+import { SettingsService } from '../../providers/settings-service/settings-service';
 // import {ItemTask} from '../modules/item-task/item-task';
 
 @Component({
@@ -41,39 +41,36 @@ export class HomePage {
         this.showCount = 1;
       }
 
-      // taskService.getTasks(this.showCount).then((data) => {
-      //   if (data) {
-      //     this.tasks = data;
-      //   }
-      // });
-      taskService.getTasks(this.showCount).then((data) => {
-        let tasks = [];
-        if (data.res.rows && data.res.rows.length > 0) {
-          let rows = data.res.rows;
-          if (rows.length > 0) {
-            for (let i = 0; i < rows.length; i++) {
-              let item = rows.item(i);
-              let details = '';
-              if (item.details && item.details !== 'null') {
-                details = item.details;
+      if (this.isDevice()) {
+        taskService.getTasks(this.showCount).then((data) => {
+          let tasks = [];
+          if (data.res.rows && data.res.rows.length > 0) {
+            let rows = data.res.rows;
+            if (rows.length > 0) {
+              for (let i = 0; i < rows.length; i++) {
+                let item = rows.item(i);
+                let details = '';
+                if (item.details && item.details !== 'null') {
+                  details = item.details;
+                }
+                let task: Task = {
+                  id: item.id,
+                  name: item.name,
+                  details: item.details,
+                  count: item.count,
+                  completed: item.completed,
+                  showCount: this.showCount,
+                  arrayIndex: item.arrayIndex,
+                  header: item.header
+                };
+                tasks.push(task);
               }
-              let task: Task = {
-                id: item.id,
-                name: item.name,
-                details: item.details,
-                count: item.count,
-                completed: item.completed,
-                showCount: this.showCount,
-                arrayIndex: item.arrayIndex,
-                header: item.header
-              };
-              tasks.push(task);
+              // console.log(JSON.stringify(tasks));
+              return tasks;
             }
-            // console.log(JSON.stringify(tasks));
-            return tasks;
           }
-        }
-      });
+        });
+      }
     });
 
     events.subscribe('menu:clear', (eventData) => {
@@ -107,19 +104,22 @@ export class HomePage {
     modal.onDidDismiss(data => {
       if (data) {
         for (var i = 0; i < data.length; i++) {
-          let task: Task = {
-            name: data[i],
-            details: '',
-            count: 1,
-            completed: 0,
-            showCount: this.showCount,
-            header: 0
-          };
+          var task = new Task();
+          task.name = data[i];
+          task.details = '';
+          task.count = 1;
+          task.completed = 0;
+          task.showCount = this.showCount;
+          task.header = 0;
 
-          this.taskService.saveTask(task).then((data) => {
-            let taskId = data.res["insertId"];
-            return this.taskService.getTaskById(taskId, this.showCount);
-          });
+          if (this.isDevice()) {
+            this.taskService.saveTask(task).then((data) => {
+              let taskId = data.res["insertId"];
+              return this.taskService.getTaskById(taskId, this.showCount);
+            });
+          } else {
+            this.tasks.push(task);
+          }
         }
       }
       console.log("home.ts: tasks.length="+this.tasks.length);
@@ -130,16 +130,22 @@ export class HomePage {
   delete(task) {
     let index = this.tasks.indexOf(task);
     if (index > -1) {
-      this.taskService.removeTask(task.id).then((data) => {
+      if (this.isDevice()) {
+        this.taskService.removeTask(task.id).then((data) => {
+          this.tasks.splice(index, 1);
+        });
+      } else {
         this.tasks.splice(index, 1);
-      });
+      }
     }
   }
 
   details(task) {
     let modal = this.modalCtrl.create(DetailsPage, {task});
     modal.onDidDismiss((updatedTask: Task) => {
-      this.taskService.updateTask(updatedTask);
+      if (this.isDevice()) {
+        this.taskService.updateTask(updatedTask);
+      }
       task = updatedTask;
     });
     modal.present();
@@ -149,7 +155,9 @@ export class HomePage {
     this.tasks = reorderArray(this.tasks, indexes);
     for (var i=0; i<this.tasks.length; i++) {
       this.tasks[i].arrayIndex = i;
-      this.taskService.updateTask(this.tasks[i]);
+      if (this.isDevice()) {
+        this.taskService.updateTask(this.tasks[i]);
+      }
     }
   }
 
@@ -168,7 +176,9 @@ export class HomePage {
         {
           text: 'Ok',
           handler: () => {
-            this.taskService.removeAllTasks();
+            if (this.isDevice()) {
+              this.taskService.removeAllTasks();
+            }
             this.tasks = [];
           }
         }
@@ -187,7 +197,17 @@ export class HomePage {
   // }
 
   check(task) {
-    this.taskService.updateTask(task);
+    if (this.isDevice()) {
+      this.taskService.updateTask(task);
+    }
+  }
+
+  private isDevice() {
+    if (this.platform.is('cordova')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
