@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons start>
-      <button (click)="dismiss()">
+      <button ion-button icon-left (click)="dismiss()">
         <span primary>Tilbake</span>
       </button>
     </ion-buttons>
@@ -16,18 +16,18 @@
   <ion-list>
 
     <ion-item>
-      <ion-label primary>Beskrivelse:</ion-label>
+      <ion-label color="primary">Beskrivelse:</ion-label>
       <ion-input value="{{task.name}}" placeholder="Beskrivelse" [(ngModel)]="task.name"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label primary>Antall:</ion-label>
+      <ion-label color="primary">Antall:</ion-label>
       <ion-input (focus)="selectAll($event)" type="number" value="{{task.count}}" placeholder="Antall" [(ngModel)]="task.count"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label primary>Fet skrift:</ion-label>
-      <ion-checkbox item-right checked="false" (click)="header()"></ion-checkbox>
+      <ion-label color="primary">Fet skrift:</ion-label>
+      <ion-checkbox item-right checked="{{isHeader()}}" (click)="header()"></ion-checkbox>
     </ion-item>
 
     <ion-item>

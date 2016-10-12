@@ -1,4 +1,4 @@
-<ion-item-sliding class="item-remove-animate">
+<ion-item-sliding class="item-remove-animate item-inner">
   <ion-item>
     <div (click)="checkTask()">
       <h2 [ngClass]="{strikethrough: (task.completed === 1), textbold: (task.header === 1)}">{{task.name}}</h2>
@@ -7,13 +7,13 @@
   </ion-item>
 
   <ion-item-options side="left">
-    <button danger (click)="remove()">
+    <button ion-button icon-left danger (click)="remove()">
       <ion-icon name="trash"></ion-icon>
     </button>
   </ion-item-options>
 
   <ion-item-options side="right">
-    <button (click)="details()">
+    <button ion-button icon-left (click)="details()">
       <ion-icon name="information-circle"></ion-icon>
     </button>
   </ion-item-options>

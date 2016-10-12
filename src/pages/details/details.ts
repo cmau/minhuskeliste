@@ -29,6 +29,17 @@ export class DetailsPage {
     }
   }
 
+  public isHeader() {
+    if (this.task.header == 1) {
+      console.log(" -> isHeader1="+this.task.header);
+      return 'true';
+    } else {
+      console.log(" -> isHeader2="+this.task.header);
+      return 'false';
+    }
+
+  }
+
   selectAll(event): void {
     event.target.select();
   }

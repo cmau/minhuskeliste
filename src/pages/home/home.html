@@ -8,7 +8,7 @@
 
     <ion-buttons end>
       <button ion-button icon-left (click)="add()">
-        <ion-icon name="add-circle"></ion-icon>
+        <ion-icon name="add-circle" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -17,14 +17,17 @@
 
 <ion-content>
   <!-- Tasks list -->
-  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)" class="small-margin-bottom">
-    <item-task class="item no-padding"
-               *ngFor="let task of tasks; let i = index"
-               [task]="task"
-               (itemRemove)="delete($event)"
-               (itemDetails)="details($event)"
-               (itemCheck)="check($event)">
-    </item-task>
+  <ion-list class="small-margin-bottom">
+    <ion-item-group reorder="true" (ionItemReorder)="reorderItems($event)">
+      <item-task class="item-block item no-padding"
+                 *ngFor="let task of tasks; let i = index"
+                 [task]="task"
+                 (itemRemove)="delete($event)"
+                 (itemDetails)="details($event)"
+                 (itemCheck)="check($event)">
+      </item-task>
+      <!--<ion-item *ngFor="let task of tasks; let i = index">{{task.name}}</ion-item>-->
+    </ion-item-group>
   </ion-list>
 
   <ion-item *ngIf="!tasks || tasks.length === 0">

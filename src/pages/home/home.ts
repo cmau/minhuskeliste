@@ -122,7 +122,6 @@ export class HomePage {
           }
         }
       }
-      console.log("home.ts: tasks.length="+this.tasks.length);
     });
     modal.present();
   }
@@ -141,6 +140,7 @@ export class HomePage {
   }
 
   details(task) {
+    console.log("home.ts: details(): task.header="+task.header);
     let modal = this.modalCtrl.create(DetailsPage, {task});
     modal.onDidDismiss((updatedTask: Task) => {
       if (this.isDevice()) {
