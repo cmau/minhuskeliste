@@ -42,7 +42,9 @@ export class HomePage {
       }
 
       if (this.isDevice()) {
+        console.log(" -> getTasks()!");
         taskService.getTasks(this.showCount).then((data) => {
+          console.log("home.ts: getTasks().then => data: ", data);
           let tasks = [];
           if (data.res.rows && data.res.rows.length > 0) {
             let rows = data.res.rows;
